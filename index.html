@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> 	
+	<title>CWRC CCM</title>
+	<script type="text/javascript" src="./js/jquery-1.7.2.min.js"></script>
+	<script type="text/javascript" src="./js/jquery-ui-1.8.20.custom.min.js"></script>
+	<script type="text/javascript" src="./js/jquery.watermark.js"></script>
+	<script type="text/javascript" src="./js/jquery.tmpl.js"></script>
+	<script type="text/javascript" src="./js/knockout-2.1.0.js"></script>
+	<script type="text/javascript" src="./js/knockout.mapping-2.1.2.js"></script>
+	<script src="js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="./js/cwrc-ccm.js"></script>		
+	<link rel="stylesheet" type="text/css" href="css/overcast/jquery-ui-1.8.20.custom.css" title="style1"  media="screen">
+	<link rel="stylesheet" type="text/css" href="css/style.css" title="style1"  media="screen">
+	<link href="css/bootstrap.min.css" rel="stylesheet">
+	<script>
+		var ccm = new CCM({baseurl:"http://apps.testing.cwrc.ca/"});
+		jQuery(document).ready(function() {
+			ccm.init();					
+		});
+
+	</script>
+
+	
+</head>
+<body>
+	<header>
+		<div id="cwrcLogo"></div>
+		<div id="cwrcSearchBar">
+				<input id="test" type="text" size="25">
+				<button><span class="ui-icon ui-icon-search"></span></button>
+		</div>
+		<nav>
+			<!--
+			<a href="#">access</a>
+			<a href="#">views</a>
+			<a href="#">tools</a>
+			-->
+			<a href="#" class="cwrcButton" id="cwrcLogoutButton">Logout</a>
+
+		</nav>
+	</header>
+	
+
+	<div class="tabbable">
+  		<ul class="nav nav-tabs" data-bind="foreach: tabs">
+    		<li data-bind="css: { active: $root.selected() === $data }">
+        		<a href="#" data-bind="click: $root.selected, text: name"></a>
+        		<span data-bind="if: data.removable">
+        		<span href="#" class="ui-icon ui-icon-close cwrcCloseTabButton" data-bind="click: function() { $root.removeItem($data); }"></span>
+        		</span>
+    		</li>
+  		</ul>
+	  	<div class="tab-content" data-bind="foreach: tabs">
+	    	<div class="tab-pane" data-bind="css: { active: $root.selected() === $data }">
+	      		<!-- <textarea data-bind="text: content"></textarea> -->
+	      		<!-- <div id="cwrcTab${index}" class="cwrcTab" data-bind="template: {name: $root.displayMode(tab), data: tab}"> </div> -->
+	      		<div class="tabTemplate" data-bind="template: $root.displayMode($data)"></div>
+	    	</div>
+	  	</div>
+	</div>
+
+
+	<!-- <section>
+		
+		<div id="tabby" data-bind="template: { name: 'mainTmpl' }, tabs: tabs">
+		</div>		
+
+	</section> -->
+	
+</body>
+</html>

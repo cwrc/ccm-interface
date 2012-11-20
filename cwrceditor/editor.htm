@@ -1,0 +1,60 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+	<head>
+		<title>CWRCWriter</title>
+		<link type="text/css" rel="stylesheet" href="css/style.css" />
+		<link type="text/css" rel="stylesheet" href="smoothness/jquery-ui-1.8.13.custom.css" />
+		<link type="text/css" rel="stylesheet" href="js/snippet/jquery.snippet.css" />
+		<script type="text/javascript" src="js/jquery/jquery-1.6.1.js"></script>
+		<script type="text/javascript" src="js/jquery/jquery-ui-1.8.13.custom.min.js"></script>
+		<script type="text/javascript" src="js/jquery/jquery.contextmenu.js"></script>
+		<script type="text/javascript" src="js/jquery/jquery.watermark.min.js"></script>
+		<script type="text/javascript" src="js/tinymce/jscripts/tiny_mce/jquery.tinymce.js"></script>
+		<script type="text/javascript" src="js/jstree/jquery.hotkeys.js"></script>
+		<!-- can't use jquery.jtree.min.js due to modification -->
+		<script type="text/javascript" src="js/jstree/jquery.jstree.js"></script>
+		<script type="text/javascript" src="js/snippet/jquery.snippet.min.js"></script>
+		<script type="text/javascript" src="js/dialogs/dialog_settings.js"></script>
+		<script type="text/javascript" src="js/editor.js"></script>
+		<script type="text/javascript" src="js/dialog.js"></script>
+		<script type="text/javascript" src="js/filemanager.js"></script>
+		<script type="text/javascript" src="js/structuretree.js"></script>
+		<script type="text/javascript" src="js/entitieslist.js"></script>
+		<script type="text/javascript" src="js/relations.js"></script>
+		
+		<script type="text/javascript" src="js/knockout-2.1.0.js"></script>
+		<script type="text/javascript" src="js/knockout-mapping.js"></script>
+		<script type="text/javascript" src="js/knockout-tinymce.js"></script>
+		<script type="text/javascript" src="js/jquery.tipTip.js"></script>
+		<script type="text/javascript" src="js/cwrcdialogs.js"></script>
+		
+		<script type="text/javascript">
+			window.onbeforeunload = function() {
+				if (this.tinymce.get('editor').isDirty()) {
+					return 'You have unsaved changes.';
+				}
+			}
+			$(function() {
+				writer = null;
+				$.ajax({
+					url: 'http://apps.testing.cwrc.ca/editor/documents/info/projectname',
+					success: function(data, status, xhr) {
+						writer = new Writer({
+							project: data
+						});
+						writer.init();
+						writer.cwrcDialogs = new CWRCDialogs({entitySchema:'json/schema.xml', entityBase : 'http://apps.testing.cwrc.ca/services/ccm/entity/'});
+						
+					},
+					error: function() {
+						writer = new Writer();
+						writer.init();
+						writer.cwrcDialogs = new CWRCDialogs({entitySchema:'json/schema.xml', entityBase : 'http://apps.testing.cwrc.ca/services/ccm/entity/'});
+						
+					}
+				});
+			});
+		</script>
+	</head>
+	<body></body>
+</html>
