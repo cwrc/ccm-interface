@@ -480,6 +480,7 @@ label {
 #attributeSelector {
 	border: 1px solid #999;
 	top: 5px;
+
 	bottom: 0;
 	width: 130px;
 	position: absolute;
@@ -924,6 +925,10 @@ div.mceDropDown {
 
 .splitButtons .ui-dialog-buttonset button.left {
 	float: left;
+}
+
+.ui-icon-inline { 
+	display: inline-block; 
 }
 
 .ui-icon-help {

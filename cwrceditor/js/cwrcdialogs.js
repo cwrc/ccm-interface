@@ -61,8 +61,8 @@ function CWRCDialogs(opts) {
 							 '<h3><a href="#"></a></h3>'+
 							 '<div data-bind="template:{ name: $parent.displayMode, foreach: $data } "></div>' +
 							 '</div>' +
-							 '<a class="cwrcClick" href="#" data-bind="click: add">[+]</a> ' +
-							 '<a class="cwrcClick" href="#" data-bind="click: remove">[-]</a>' +
+							 '<a class="cwrcClick ui-icon-inline ui-icon ui-icon-plusthick" href="#" data-bind="click: add"></a> ' +
+							 '<a class="cwrcClick ui-icon-inline ui-icon ui-icon-minusthick" href="#" data-bind="click: remove"></a>' +
 							 '</script>';
 	
 	var oneOrMoreTemplate = '<script type="text/html" id="oneormore">'+
@@ -70,8 +70,8 @@ function CWRCDialogs(opts) {
 							'<h3><a href="#"></a></h3>'+
 							'<div data-bind="template:{ name: $parent.displayMode, foreach: $data } "></div>' +
 							'</div>' +
-							'<a class="cwrcClick" href="#" data-bind="click: add">[+]</a> ' +
-							'<a class="cwrcClick" href="#" data-bind="click: remove">[-]</a>' +
+							'<a class="cwrcClick ui-icon-inline ui-icon ui-icon-plusthick" href="#" data-bind="click: add"></a> ' +
+							'<a class="cwrcClick ui-icon-inline ui-icon ui-icon-minusthick" href="#" data-bind="click: remove"></a>' +
 							'</script>';
 	
 	var optionalTemplate = '<script type="text/html" id="optional">'+
