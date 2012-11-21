@@ -63,6 +63,7 @@ function CWRCDialogs(opts) {
 							 '</div>' +
 							 '<a class="cwrcClick ui-icon-inline ui-icon ui-icon-plusthick" href="#" data-bind="click: add"></a> ' +
 							 '<a class="cwrcClick ui-icon-inline ui-icon ui-icon-minusthick" href="#" data-bind="click: remove"></a>' +
+							 '<br/><br/>' +
 							 '</script>';
 	
 	var oneOrMoreTemplate = '<script type="text/html" id="oneormore">'+
@@ -360,7 +361,8 @@ function CWRCDialogs(opts) {
 			changeMonth: true,
 			changeYear: true,
 			dateFormat: "yy-mm-dd",
-			yearRange: "0000:c+100"
+			yearRange: "0000:c+100",
+			constrainInput: false
 		});
 		
 		
