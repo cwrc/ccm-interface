@@ -1,5 +1,40 @@
+// Knockout Functions
+ko.bindingHandlers.tinymce = {
+	init: function(element, valueAccessor, allBindingsAccessor, viewModel){
+		var modelValue = valueAccessor();
+		var options = {
+			mode: "textareas",
+			theme: "simple",
+			editor_selector: "cwrcNote",
+			setup: function(editor){ // Used to handle changes
+				editor.onChange.add(function(ed, data){
+					if(ko.isWriteableObservable(modelValue)){
+						modelValue(data.content)
+					}
+				});
+			}
+		};
 
+		//Handle destroying the editor
+		ko.utils.domNodeDisposal.addDisposeCallback(element, function(){
+			$(element).parent().find("span.mceEditor,div.mceEditor").each(function(i, node){
+				var editor = tineMCE.get(node.id.replace(/_parent$/, ""));
+				if(editor){
+					editor.remove();
+				}
+			});
+		});
 
+		// Initialize tiny mce
+		$(element).tinymce(options);
+	},
+	update: function(element, valueAccessor, allBindingsAccessor, viewModel){
+		var value = ko.utils.unwrapObservable(valueAccessor());
+		$(element).html(value);
+	}
+}
+
+// Dialog Functions
 function CWRCDialogs(opts) {
 	var self = this;
 	self.entitySchema = opts.entitySchema;
@@ -61,8 +96,8 @@ function CWRCDialogs(opts) {
 							 '<h3><a href="#"></a></h3>'+
 							 '<div data-bind="template:{ name: $parent.displayMode, foreach: $data } "></div>' +
 							 '</div>' +
-							 '<a class="cwrcClick ui-icon-inline ui-icon ui-icon-plusthick" href="#" data-bind="click: add"></a> ' +
-							 '<a class="cwrcClick ui-icon-inline ui-icon ui-icon-minusthick" href="#" data-bind="click: remove"></a>' +
+							 '<a class="cwrcClick ui-icon-inline ui-icon ui-icon-plusthick" toolTip="TODO: add tool tip text" href="#" data-bind="click: add"></a> ' +
+							 '<a class="cwrcClick ui-icon-inline ui-icon ui-icon-minusthick" toolTip="TODO: add tool tip text" href="#" data-bind="click: remove"></a>' +
 							 '<br/><br/>' +
 							 '</script>';
 	
@@ -71,8 +106,9 @@ function CWRCDialogs(opts) {
 							'<h3><a href="#"></a></h3>'+
 							'<div data-bind="template:{ name: $parent.displayMode, foreach: $data } "></div>' +
 							'</div>' +
-							'<a class="cwrcClick ui-icon-inline ui-icon ui-icon-plusthick" href="#" data-bind="click: add"></a> ' +
-							'<a class="cwrcClick ui-icon-inline ui-icon ui-icon-minusthick" href="#" data-bind="click: remove"></a>' +
+							'<a class="cwrcClick ui-icon-inline ui-icon ui-icon-plusthick" toolTip="TODO: add tool tip text" href="#" data-bind="click: add"></a> ' +
+							'<a class="cwrcClick ui-icon-inline ui-icon ui-icon-minusthick" toolTip="TODO: add tool tip text" href="#" data-bind="click: remove"></a>' +
+							'<br/><br/>' +
 							'</script>';
 	
 	var optionalTemplate = '<script type="text/html" id="optional">'+
@@ -92,7 +128,7 @@ function CWRCDialogs(opts) {
 	var datePickerTemplate = '<script type="text/html" id="datePicker">'+
 							'<div>' +
 	    					'<div class="cwrc-property-label-vertical">Date :&nbsp;</div>' +
-	    					'<div><input class="datePicker" data-bind="value: value" /> <span class="cwrc-help" data-bind="attr:{title: helpText}">[?]</span>' +
+	    					'<div><input class="datePicker" placeholder="YYYY-MM-DD" data-bind="value: value" /> <span class="cwrc-help" data-bind="attr:{title: helpText}">[?]</span>' +
 							'</div>' +
 							'</div>' +
 							'</script>';
@@ -111,7 +147,8 @@ function CWRCDialogs(opts) {
 	var textAreaTemplate = '<script type="text/html" id="textArea">'+
 							'<div>' +
 	    					'<div class="cwrc-property-label-vertical"><span data-bind="text: label"></span> :&nbsp;</div>' +
-	    					'<div><textarea class="cwrcNote" rows="2" cols="20" data-bind="value: value"></textarea><span class="cwrc-help" data-bind="attr:{title: helpText}">[?]</span></div>' +
+	    					'<div><textarea class="cwrcNote" rows="2" cols="20" data-bind="tinymce: value"></textarea><span class="cwrc-help" data-bind="attr:{title: helpText}">[?]</span></div>' +
+							//'<div><h4><span data-bind="text: value"></span></h4></div>' + // This line is used to check if the text area is working.
 							'</div>' +
 							'</script>';
 	// multiple
@@ -193,7 +230,6 @@ function CWRCDialogs(opts) {
 	$('head').append(comboboxTemplate);
 	$('head').append(radioButtonTemplate);
 	$('head').append(cwrcstyle);
-
 	
 	// -- functions
 
@@ -355,6 +391,10 @@ function CWRCDialogs(opts) {
 		// });
 		$(function(){
 			$("[title]").tipTip({edgeOffset: 10});
+		});
+
+		$(function(){
+			$("[toolTip]").tipTip({attribute: "toolTip"});
 		});
 		
 		$( ".datePicker" ).datepicker({
