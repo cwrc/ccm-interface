@@ -18,7 +18,7 @@ ko.bindingHandlers.tinymce = {
 		//Handle destroying the editor
 		ko.utils.domNodeDisposal.addDisposeCallback(element, function(){
 			$(element).parent().find("span.mceEditor,div.mceEditor").each(function(i, node){
-				var editor = tineMCE.get(node.id.replace(/_parent$/, ""));
+				var editor = tinyMCE.get(node.id.replace(/_parent$/, ""));
 				if(editor){
 					editor.remove();
 				}
