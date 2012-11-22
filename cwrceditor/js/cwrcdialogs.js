@@ -96,8 +96,8 @@ function CWRCDialogs(opts) {
 							 '<h3><a href="#"></a></h3>'+
 							 '<div data-bind="template:{ name: $parent.displayMode, foreach: $data } "></div>' +
 							 '</div>' +
-							 '<a class="cwrcClick ui-icon-inline ui-icon ui-icon-plusthick" toolTip="TODO: add tool tip text" href="#" data-bind="click: add"></a> ' +
-							 '<a class="cwrcClick ui-icon-inline ui-icon ui-icon-minusthick" toolTip="TODO: add tool tip text" href="#" data-bind="click: remove"></a>' +
+							 '<a class="cwrcClick ui-icon-inline ui-icon ui-icon-plusthick" toolTip="Add new (TODO: add tool tip text)" href="#" data-bind="click: add"></a> ' +
+							 '<a class="cwrcClick ui-icon-inline ui-icon ui-icon-minusthick" toolTip="Remove (TODO: add tool tip text)" href="#" data-bind="click: remove"></a>' +
 							 '<br/><br/>' +
 							 '</script>';
 	
@@ -106,8 +106,8 @@ function CWRCDialogs(opts) {
 							'<h3><a href="#"></a></h3>'+
 							'<div data-bind="template:{ name: $parent.displayMode, foreach: $data } "></div>' +
 							'</div>' +
-							'<a class="cwrcClick ui-icon-inline ui-icon ui-icon-plusthick" toolTip="TODO: add tool tip text" href="#" data-bind="click: add"></a> ' +
-							'<a class="cwrcClick ui-icon-inline ui-icon ui-icon-minusthick" toolTip="TODO: add tool tip text" href="#" data-bind="click: remove"></a>' +
+							'<a class="cwrcClick ui-icon-inline ui-icon ui-icon-plusthick" toolTip="Add new (TODO: add tool tip text)" href="#" data-bind="click: add"></a> ' +
+							'<a class="cwrcClick ui-icon-inline ui-icon ui-icon-minusthick" toolTip="Remove (TODO: add tool tip text)" href="#" data-bind="click: remove"></a>' +
 							'<br/><br/>' +
 							'</script>';
 	
