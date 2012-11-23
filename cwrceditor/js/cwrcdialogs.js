@@ -32,7 +32,7 @@ ko.bindingHandlers.tinymce = {
 		var value = ko.utils.unwrapObservable(valueAccessor());
 		$(element).html(value);
 	}
-}
+};
 
 // Dialog Functions
 function CWRCDialogs(opts) {
@@ -181,7 +181,7 @@ function CWRCDialogs(opts) {
 							'<div>' +
 	    					'<div class="cwrc-property-label-vertical"><span data-bind="text: label"></span> :&nbsp;</div>' +
 	    					'<div>'+
-							'<select data-bind="options: choices, value: value, optionsText: \'content\'"></select> ' +
+							'<select data-bind="options: choices, value: value, optionsValue: \'value\', optionsText: \'content\'"></select> ' +
 							'<span class="cwrc-help" data-bind="attr:{title: helpText}">[?]</span></div>' +													
 							'</div>' +
 							'</script>';							
@@ -191,7 +191,7 @@ function CWRCDialogs(opts) {
 							'<div>' +
 	    					'<div class="cwrc-property-label-vertical"><span data-bind="text: label"></span> :&nbsp;</div>' +
 	    					'<div>'+
-							'<select data-bind="options: choices, value: value, optionsText: \'content\'"></select>' + 
+							'<select data-bind="options: choices, value: value, optionsValue: \'value\', optionsText: \'content\'"></select>' + 
 							' <span class="cwrc-help" data-bind="attr:{title: helpText}">[?]</span></div>' +
 							'</div>' +
 							'</script>';
@@ -582,8 +582,13 @@ function CWRCDialogs(opts) {
 			}
 		
 			if (obj.choices) {
-				result.choices = []
-				result.selected = []
+				result.choices = [];
+				result.selected = [];
+				
+				if(obj.label == 'Name Part Type'){
+					result.value = 'forename';
+				}
+
 				for (var i in obj.choices) {
 					result.choices.push(obj.choices[i])
 				}
