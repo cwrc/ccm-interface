@@ -36,6 +36,20 @@ ko.bindingHandlers.tinymce = {
 
 // Dialog Functions
 function CWRCDialogs(opts) {
+	var compareArray = function(inputArray, checkArray){
+		if(inputArray.length == checkArray.length){
+			for(var index in inputArray){
+				if(inputArray[index] != checkArray[index]){
+					return false;
+				}
+			}
+
+			return true;
+		}
+
+		return false;
+	}
+
 	var self = this;
 	self.entitySchema = opts.entitySchema;
 	self.entityBase = opts.entityBase;
@@ -181,7 +195,7 @@ function CWRCDialogs(opts) {
 							'<div>' +
 	    					'<div class="cwrc-property-label-vertical"><span data-bind="text: label"></span> :&nbsp;</div>' +
 	    					'<div>'+
-							'<select data-bind="options: choices, value: value, optionsValue: \'value\', optionsText: \'content\'"></select> ' +
+							'<select data-bind="value: value, options: choices, optionsValue: \'value\', optionsText: \'content\'"></select> ' +
 							'<span class="cwrc-help" data-bind="attr:{title: helpText}">[?]</span></div>' +													
 							'</div>' +
 							'</script>';							
@@ -191,7 +205,7 @@ function CWRCDialogs(opts) {
 							'<div>' +
 	    					'<div class="cwrc-property-label-vertical"><span data-bind="text: label"></span> :&nbsp;</div>' +
 	    					'<div>'+
-							'<select data-bind="options: choices, value: value, optionsValue: \'value\', optionsText: \'content\'"></select>' + 
+							'<select data-bind="options: choices, optionsValue: \'value\', optionsText: \'content\'"></select>' + 
 							' <span class="cwrc-help" data-bind="attr:{title: helpText}">[?]</span></div>' +
 							'</div>' +
 							'</script>';
@@ -326,6 +340,7 @@ function CWRCDialogs(opts) {
 	self.processNode = function(element) {		
 		var nodeName = element.nodeName.toLowerCase();
 		var visitChildren = true;	
+		var createdValue;
 
 		switch(nodeName) {
 			case 'element':
@@ -348,7 +363,7 @@ function CWRCDialogs(opts) {
 			case 'interleave':
 			case 'optional':
 				// right now we assume just one entry per quantifier
-				self.processQuantifier(element);
+				createdValue = self.processQuantifier(element);
 				break;
 		}
 		
@@ -371,6 +386,13 @@ function CWRCDialogs(opts) {
 			case 'optional':	
 				self.postprocessQuantifier();
 				break;				
+		}
+
+		// Check if we are in the preferred name and do the needed actions
+		if(nodeName == "oneormore" && compareArray(self.path, ["entity","person", "identity", "preferredForm"])){
+			createdValue.interfaceFields()[0][1].interfaceFields()[0].value('forename');
+			createdValue.add();
+			createdValue.interfaceFields()[1][1].interfaceFields()[0].value('surname');
 		}
 	}
 	
@@ -401,10 +423,8 @@ function CWRCDialogs(opts) {
 			changeMonth: true,
 			changeYear: true,
 			dateFormat: "yy-mm-dd",
-			yearRange: "0000:c+100",
-			constrainInput: false
+			yearRange: "0000:c+100"
 		});
-		
 		
 		$(".cwrc-dialog").parent().parent().each(function(i,e){
 		
@@ -441,9 +461,9 @@ function CWRCDialogs(opts) {
 	}
 	
 	self.processQuantifier = function(element) {
-		
 		var newField = {}
 		newField.input = element.nodeName.toLowerCase();
+
 		// newField.label = function() {return "Quantifier label";};
 		newField.add = function() {
 
@@ -477,6 +497,8 @@ function CWRCDialogs(opts) {
 		self.workingQuantifiers.push(newField)
 		
 		// self.viewModel.interfaceFields.push(newField);
+
+		return newField;
 	}
 
 	self.checkIfHasInterface = function(item) {
@@ -584,10 +606,6 @@ function CWRCDialogs(opts) {
 			if (obj.choices) {
 				result.choices = [];
 				result.selected = [];
-				
-				if(obj.label == 'Name Part Type'){
-					result.value = 'forename';
-				}
 
 				for (var i in obj.choices) {
 					result.choices.push(obj.choices[i])
@@ -1101,8 +1119,8 @@ function CWRCDialogs(opts) {
 
 					
 				},
-				"cancel" : function() {
-					$(this).dialog("close"); 
+				"cancel" : function(){
+					$(this).dialog("close");
 				}
 				
 			}
@@ -1160,7 +1178,7 @@ function CWRCDialogs(opts) {
 		});
 		
 		ko.applyBindings(self.viewModel);
-		
+
 		$("#newPersonDialogue").attr('title', "New " + self.type);
 
 		$("#newPersonDialogue").dialog({
@@ -1202,11 +1220,14 @@ function CWRCDialogs(opts) {
 					$(this).dialog("close"); 					
 				},
 				"cancel" : function() {
-					$(this).dialog("close"); 
+					$(this).dialog("close");
 				}
-				
-				}
+			}
 		});
+
+		// Check for first name part and add the forename and sirname sections
+		
+		// Update the ui components
 		self.updateUI();
 		
 	};
