@@ -122,6 +122,9 @@ function CWRCDialogs(opts) {
 							'</div>' +
 							'<a class="cwrcClick ui-icon-inline ui-icon ui-icon-plusthick" toolTip="Add new (TODO: add tool tip text)" href="#" data-bind="click: add"></a> ' +
 							'<a class="cwrcClick ui-icon-inline ui-icon ui-icon-minusthick" toolTip="Remove (TODO: add tool tip text)" href="#" data-bind="click: remove"></a>' +
+							'<!-- ko if: $data.useButton -->' +
+							'<button style="float: right;" type="button" data-bind="text: buttonMessage, click: buttonClick"></button>' +
+							'<!-- /ko -->' +
 							'<br/><br/>' +
 							'</script>';
 	
@@ -393,6 +396,12 @@ function CWRCDialogs(opts) {
 			createdValue.interfaceFields()[0][1].interfaceFields()[0].value('forename');
 			createdValue.add();
 			createdValue.interfaceFields()[1][1].interfaceFields()[0].value('surname');
+			createdValue.useButton = true;
+			createdValue.buttonClick = function(){
+				$("#newPersonDialogue ~ .ui-dialog-buttonpane button")[0].click();
+			};
+
+			createdValue.buttonMessage = "Save Person";
 		}
 	}
 	
